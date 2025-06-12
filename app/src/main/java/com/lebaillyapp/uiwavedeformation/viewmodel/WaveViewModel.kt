@@ -22,7 +22,6 @@ class WaveViewModel : ViewModel() {
 
     private val waveManager = WaveAnimationManager()
 
-    // Grille originale + déformée
     private val _gridPoints = MutableStateFlow(createGrid())
     val gridPoints: StateFlow<List<List<GridPoint>>> = _gridPoints
 
@@ -41,9 +40,16 @@ class WaveViewModel : ViewModel() {
         }
     }
 
-    fun triggerWave(origin: Offset) {
+    /**
+     * Lancement d'une onde à partir de coordonnées normalisées [xNorm], [yNorm] dans [0..1].
+     */
+    fun launchWaveAt(xNorm: Float, yNorm: Float) {
+        // Calculer la position dans la grille
+        val x = xNorm * (cols - 1)
+        val y = yNorm * (rows - 1)
+
         val wave = Wave(
-            origin = origin,
+            origin = Offset(x, y),
             amplitude = 10f,
             frequency = 2f,
             speed = 5f,
@@ -59,7 +65,6 @@ class WaveViewModel : ViewModel() {
                 val newGrid = _gridPoints.value.map { row ->
                     row.map { point ->
                         val deformationY = waveManager.calculateDeformation(point.originalPosition, currentTime)
-                        // Mise à jour position déformée sur y uniquement
                         point.copy(
                             currentPosition = Offset(
                                 point.originalPosition.x,
@@ -69,7 +74,8 @@ class WaveViewModel : ViewModel() {
                     }
                 }
                 _gridPoints.value = newGrid
-                delay(16) // ~60fps
+                waveManager.cleanupWaves()
+                delay(16)
             }
         }
     }
