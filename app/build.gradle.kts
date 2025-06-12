@@ -56,4 +56,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Lifecycle ViewModel KTX (coroutines friendly)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Lifecycle ViewModel Compose integration
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+
+    // Kotlin Coroutines core + android
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+
+
 }
