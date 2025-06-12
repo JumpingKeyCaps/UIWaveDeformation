@@ -6,60 +6,68 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import com.lebaillyapp.uiwavedeformation.model.GridPoint
 
 /**
- * Composable affichant une grille 2D simple sous forme de points et lignes.
+ * Composable affichant une grille 2D avec déformation,
+ * en utilisant les positions déformées de chaque GridPoint.
  *
- * @param rows Nombre de lignes de la grille.
- * @param cols Nombre de colonnes de la grille.
+ * @param gridPoints Liste 2D de GridPoint contenant les positions originales et déformées.
  * @param pointRadius Rayon des points affichés.
  * @param lineColor Couleur des lignes de la grille.
  * @param pointColor Couleur des points.
+ * @param modifier Modifier Compose standard.
  */
 @Composable
 fun GridCanvas(
-    modifier: Modifier = Modifier.fillMaxSize(),
-    rows: Int,
-    cols: Int,
+    gridPoints: List<List<GridPoint>>,
     pointRadius: Float = 6f,
     lineColor: Color = Color.Gray,
-    pointColor: Color = Color.Blue
+    pointColor: Color = Color.Blue,
+    modifier: Modifier = Modifier.fillMaxSize()
 ) {
     Canvas(modifier = modifier) {
-        val widthStep = size.width / (cols - 1)
-        val heightStep = size.height / (rows - 1)
+        val rows = gridPoints.size
+        val cols = if (rows > 0) gridPoints[0].size else 0
 
-        // Dessin des lignes verticales
+        if (rows == 0 || cols == 0) return@Canvas
+
+        // Dessin des lignes verticales entre points déformés
         for (col in 0 until cols) {
-            val x = col * widthStep
-            drawLine(
-                color = lineColor,
-                start = Offset(x, 0f),
-                end = Offset(x, size.height),
-                strokeWidth = 1f
-            )
+            for (row in 0 until rows - 1) {
+                val start = gridPoints[row][col].currentPosition
+                val end = gridPoints[row + 1][col].currentPosition
+                drawLine(
+                    color = lineColor,
+                    start = Offset(start.x * size.width / (cols - 1), start.y * size.height / (rows - 1)),
+                    end = Offset(end.x * size.width / (cols - 1), end.y * size.height / (rows - 1)),
+                    strokeWidth = 1f
+                )
+            }
         }
 
-        // Dessin des lignes horizontales
+        // Dessin des lignes horizontales entre points déformés
         for (row in 0 until rows) {
-            val y = row * heightStep
-            drawLine(
-                color = lineColor,
-                start = Offset(0f, y),
-                end = Offset(size.width, y),
-                strokeWidth = 1f
-            )
+            for (col in 0 until cols - 1) {
+                val start = gridPoints[row][col].currentPosition
+                val end = gridPoints[row][col + 1].currentPosition
+                drawLine(
+                    color = lineColor,
+                    start = Offset(start.x * size.width / (cols - 1), start.y * size.height / (rows - 1)),
+                    end = Offset(end.x * size.width / (cols - 1), end.y * size.height / (rows - 1)),
+                    strokeWidth = 1f
+                )
+            }
         }
 
-        // Dessin des points
+        // Dessin des points déformés
         for (row in 0 until rows) {
-            val y = row * heightStep
             for (col in 0 until cols) {
-                val x = col * widthStep
+                val pos = gridPoints[row][col].currentPosition
                 drawCircle(
                     color = pointColor,
                     radius = pointRadius,
-                    center = Offset(x, y)
+                    center = Offset(pos.x * size.width / (cols - 1), pos.y * size.height / (rows - 1))
                 )
             }
         }
