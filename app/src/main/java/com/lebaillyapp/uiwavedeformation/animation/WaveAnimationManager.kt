@@ -3,76 +3,68 @@ package com.lebaillyapp.uiwavedeformation.animation
 import androidx.compose.ui.geometry.Offset
 import com.lebaillyapp.uiwavedeformation.model.Wave
 import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.exp
 import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
- * Gère la logique des ondes : propagation, calcul des déformations en fonction du temps et position.
- *
- * @param damping Facteur d'amortissement des ondes (entre 0 et 1).
+ * Gère la logique des ondes type "ripple" amorties dans le temps.
  */
-class WaveAnimationManager(private val damping: Float = 0.95f) {
-
+class WaveAnimationManager(
+    private val damping: Float = 0.3f,
+    private val minValueToRemoveWave: Float = 0.3f
+    ) {
     private val waves = mutableListOf<Wave>()
 
-    /**
-     * Ajoute une nouvelle onde à gérer.
-     */
-    fun addWave(wave: Wave) {
-        waves.add(wave)
-    }
+    fun addWave(wave: Wave) = waves.add(wave)
 
-    /**
-     * Nettoie les ondes trop amorties (amplitude trop faible).
-     */
+    fun hasActiveWaves() = waves.isNotEmpty()
+
     fun cleanupWaves() {
-        waves.removeAll { it.amplitude < 0.01f }
+        val now = System.currentTimeMillis()
+        waves.removeAll { wave ->
+            val elapsed = (now - wave.startTime) / 1000f
+            wave.amplitude * damping.pow(elapsed) < minValueToRemoveWave
+        }
     }
 
-    /**
-     * Calcule la déformation verticale en un point donné (x, y) à un temps donné (en ms),
-     * en sommant les contributions de toutes les ondes.
-     *
-     * @param point Position du point à calculer.
-     * @param currentTime Temps courant en ms.
-     * @return Valeur de déformation verticale (Float).
-     */
-    fun calculateDeformation(point: Offset, currentTime: Long): Float {
-        var deformation = 0f
+    fun calculateDeformation(point: Offset, currentTime: Long): Offset {
+        var totalOffset = Offset.Zero
 
         val iterator = waves.iterator()
         while (iterator.hasNext()) {
             val wave = iterator.next()
-            val elapsedTime = (currentTime - wave.startTime) / 1000f // en secondes
-            val distance = distanceBetween(point, wave.origin)
+            val elapsed = (currentTime - wave.startTime) / 1000f
+            val distance = (point - wave.origin).getLength()
+            val waveFront = wave.speed * elapsed
+            val relDist = distance - waveFront
 
-            val waveFront = wave.speed * elapsedTime
-            val relativeDistance = distance - waveFront
+            if (relDist > 0f) continue // pas encore atteint
 
-            if (relativeDistance > 0) {
-                // Le point est devant la front d’onde, pas encore affecté
-                continue
-            }
-
-            // Calcul de la contribution de l’onde sur ce point
             val omega = wave.frequency * 2 * PI.toFloat()
-            val k = omega / wave.speed // nombre d’onde
-
-            val amplitude = wave.amplitude * damping.pow(elapsedTime)
-            if (amplitude < 0.01f) {
-                // Onde trop faible, on peut la supprimer
+            val k = omega / wave.speed
+            val amplitude = wave.amplitude * damping.pow(elapsed)
+            if (amplitude < 0.5f) {
                 iterator.remove()
                 continue
             }
+            val phase = k * distance - omega * elapsed
+            val waveEffect = sin(phase) * amplitude
 
-            val phase = k * distance - omega * elapsedTime
-            deformation += amplitude * sin(phase)
+            val direction = if (distance > 0f) (point - wave.origin) / distance else Offset.Zero
+            totalOffset += direction * waveEffect
         }
-
-        return deformation
+        return totalOffset
     }
 
-    private fun distanceBetween(p1: Offset, p2: Offset): Float {
-        return (p1 - p2).getDistance()
+
+    fun getWavesSnapshot(currentTime: Long): List<Wave> {
+        return waves.map { it.copy() } // safe copy
     }
+
 }
+
+fun Offset.getLength(): Float = sqrt(x * x + y * y)
+
