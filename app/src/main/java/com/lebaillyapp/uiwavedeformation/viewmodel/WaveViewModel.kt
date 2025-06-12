@@ -1,11 +1,13 @@
 package com.lebaillyapp.uiwavedeformation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.ui.geometry.Offset
 import com.lebaillyapp.uiwavedeformation.animation.WaveAnimationManager
 import com.lebaillyapp.uiwavedeformation.model.GridPoint
 import com.lebaillyapp.uiwavedeformation.model.Wave
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,66 +18,59 @@ import kotlin.math.max
  * ViewModel principal pour gérer l'état de la grille, les ondes en cours et la déformation.
  */
 class WaveViewModel : ViewModel() {
-
-    private val rows = 20
-    private val cols = 20
-
     private val waveManager = WaveAnimationManager()
 
-    private val _gridPoints = MutableStateFlow(createGrid())
+    private val _gridPoints = MutableStateFlow<List<List<GridPoint>>>(emptyList())
     val gridPoints: StateFlow<List<List<GridPoint>>> = _gridPoints
 
-    init {
-        startAnimationLoop()
-    }
+    private var animationJob: Job? = null
 
-    private fun createGrid(): List<List<GridPoint>> {
-        return List(rows) { row ->
+    fun initGrid(width: Float, height: Float, cellSize: Float = 40f) {
+        Log.d("WaveViewModel2", "initGrid called with size=($width, $height)")
+        val cols = (width / cellSize).toInt() + 1
+        val rows = (height / cellSize).toInt() + 1
+
+        val newGrid = List(rows) { row ->
             List(cols) { col ->
+                val pos = Offset(col * cellSize, row * cellSize)
                 GridPoint(
-                    originalPosition = Offset(col.toFloat(), row.toFloat()),
-                    currentPosition = Offset(col.toFloat(), row.toFloat())
+                    originalPosition = pos,
+                    currentPosition = pos // <- initialisation importante !
                 )
             }
         }
+        _gridPoints.value = newGrid
     }
 
-    /**
-     * Lancement d'une onde à partir de coordonnées normalisées [xNorm], [yNorm] dans [0..1].
-     */
-    fun launchWaveAt(xNorm: Float, yNorm: Float) {
-        // Calculer la position dans la grille
-        val x = xNorm * (cols - 1)
-        val y = yNorm * (rows - 1)
-
+    fun launchWaveAt(x: Float, y: Float) {
+        val now = System.currentTimeMillis()
         val wave = Wave(
             origin = Offset(x, y),
-            amplitude = 10f,
+            startTime = now,
+            amplitude = 50f,
             frequency = 2f,
-            speed = 5f,
-            startTime = System.currentTimeMillis()
+            speed = 1000f
         )
         waveManager.addWave(wave)
+        if (animationJob == null || animationJob?.isCompleted == true) {
+            startAnimationLoop()
+        }
     }
 
     private fun startAnimationLoop() {
-        viewModelScope.launch {
-            while (true) {
-                val currentTime = System.currentTimeMillis()
-                val newGrid = _gridPoints.value.map { row ->
+        animationJob = viewModelScope.launch {
+            while (waveManager.hasActiveWaves()) {
+                val now = System.currentTimeMillis()
+                val updatedGrid = _gridPoints.value.map { row ->
                     row.map { point ->
-                        val deformationY = waveManager.calculateDeformation(point.originalPosition, currentTime)
-                        point.copy(
-                            currentPosition = Offset(
-                                point.originalPosition.x,
-                                point.originalPosition.y + deformationY
-                            )
-                        )
+                        val deformation = waveManager.calculateDeformation(point.originalPosition, now)
+                        point.copy(currentPosition = point.originalPosition + deformation)
                     }
                 }
-                _gridPoints.value = newGrid
+                _gridPoints.value = updatedGrid
                 waveManager.cleanupWaves()
-                delay(16)
+                delay(16L)
+                Log.d("WaveViewModel", "Animation frame updated")
             }
         }
     }
