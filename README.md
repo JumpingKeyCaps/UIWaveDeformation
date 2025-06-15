@@ -69,7 +69,7 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 | Phase 1 | Phase 2 | Phase 3 |
 |:---:|:---:|:---:|
-| ![P1](screenshots/phase1.gif) | ![P2](screenshots/phase1.gif) |  ![P3](screenshots/phase1.gif) |
+| ![P1](screenshots/phase1.gif) | ![P2](screenshots/phase2.gif) |  ![P3](screenshots/phase3.gif) |
 
 ---
 
