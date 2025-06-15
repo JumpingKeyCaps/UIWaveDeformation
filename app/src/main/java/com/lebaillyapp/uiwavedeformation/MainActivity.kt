@@ -28,19 +28,22 @@ class MainActivity : ComponentActivity() {
                     WaveGridDragScreen(
                         modifier = Modifier.fillMaxSize().padding(innerPadding),
                         config = WaveDeformationConfig(
-                            cellSize = 40f,
+                            cellSize = 20f,
                             waveAmpl = 50f,
                             waveFreq = 2f,
                             waveSpeed = 1000f,
-                            waveCoolDown = 100L,
-                            damping = 0.3f,
+
+                            waveCoolDown = 150L,
+                            damping = 0.2f,
                             minValEraseWave = 0.3f,
-                            frameRateAnim = 32L,
-                            pointRadius = 5f,
+
+                            frameRateAnim = 16L, //framerate (16L = 60fps / 32L = 30fps / 42L = 24fps)
+
+                            pointRadius = 3f,
                             maxAmplAllowed = 50f,
-                            colorBase = Color(0xFF3D5AFE),
-                            colorAccent = Color(0xFF00B0FF),
-                            trailBaseColor = Color(0xFF3D5AFE),
+                            colorBase = Color(0xFF00E5FF),
+                            colorAccent = Color(0xFF651FFF),
+                            trailBaseColor = Color(0xFF351679),
                             trailStrokeWidth = 2f,
                             trailMinAlpha = 0.05f,
                             trailMaxAlpha = 0.3f
