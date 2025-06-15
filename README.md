@@ -65,6 +65,14 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 ---
 
+## 📸 Screenshots
+
+| Phase 1 | Phase 2 | Phase 3 |
+|:---:|:---:|:---:|
+| ![P1](screenshots/phase1.gif) | ![P2](screenshots/phase1.gif) |  ![P3](screenshots/phase1.gif) |
+
+---
+
 ## ⚙️ Key Features
 
 - Real-time management of multiple waves with natural propagation and decay.  
