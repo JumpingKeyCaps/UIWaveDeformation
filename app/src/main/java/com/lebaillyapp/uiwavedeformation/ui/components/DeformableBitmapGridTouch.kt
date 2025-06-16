@@ -24,14 +24,21 @@ import kotlin.math.max
 
 @Composable
 fun DeformableBitmapGridTouch(
+    modifier: Modifier = Modifier.fillMaxSize(),
     bitmap: ImageBitmap,
-    gridCols: Int = 50,
-    gridRows: Int = 50,
-    modifier: Modifier = Modifier.fillMaxSize()
+    caseSize: Int = 50,
+    ringEffectThickness: Float = 200f,
+    waveEffectSpeed: Float = 0.9f,
+    deformAmplif: Float = 3.5f
 ) {
     var touchPoint by remember { mutableStateOf<Offset?>(null) }
     var touchStartTime by remember { mutableStateOf<Long?>(null) }
     var elapsedTime by remember { mutableStateOf(0L) }
+
+
+    val gridCols = caseSize
+    val gridRows = caseSize
+
 
     // Timer qui avance elapsedTime quand il y a un touchStartTime
     LaunchedEffect(touchStartTime) {
@@ -103,7 +110,7 @@ fun DeformableBitmapGridTouch(
 
         val nativeCanvas = drawContext.canvas.nativeCanvas
 
-        val waveSpeed = 0.5f // pixels per millisecond
+        val waveSpeed = waveEffectSpeed // pixels per millisecond
         val waveRadius = elapsedTime * waveSpeed
 
         for (row in 0 until gridRows) {
@@ -127,11 +134,11 @@ fun DeformableBitmapGridTouch(
 
                 val distance = touchPoint?.let { tp -> (tp - tileCenter).getDistance() } ?: Float.MAX_VALUE
 
-                val ringThickness = 110f
+                val ringThickness = ringEffectThickness
                 val inWave = distance in (waveRadius - ringThickness)..(waveRadius + ringThickness)
 
                 val deformFactor = if (touchPoint != null && inWave) {
-                    1f + 2.9f * (1f - ((distance - waveRadius) / ringThickness).absoluteValue)
+                    1f + deformAmplif * (1f - ((distance - waveRadius) / ringThickness).absoluteValue)
                 } else 1.1f
 
                 val centerX = (screenLeft + screenRight) / 2f
