@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.lebaillyapp.uiwavedeformation.model.WaveDeformationConfig
 import com.lebaillyapp.uiwavedeformation.ui.components.DeformableBitmapGridTouch
+import com.lebaillyapp.uiwavedeformation.ui.screen.DemoWaveGridScreen
 import com.lebaillyapp.uiwavedeformation.ui.screen.WaveGridDragScreen
 import com.lebaillyapp.uiwavedeformation.ui.screen.WaveGridScreen
 import com.lebaillyapp.uiwavedeformation.ui.theme.UIWaveDeformationTheme
@@ -116,7 +117,14 @@ class MainActivity : ComponentActivity() {
                        // FullscreenCenterCropBitmap(drawableRes = R.drawable.demogirl)
 
                         val bitmap = ImageBitmap.imageResource(id = R.drawable.demogirl)
-                        DeformableBitmapGridTouch(bitmap = bitmap)
+                      //  DeformableBitmapGridTouch(bitmap = bitmap)
+                        DemoWaveGridScreen(bitmap,modifier = Modifier
+                            .align(Alignment.Center)
+                            .fillMaxSize(0.99f),
+                            backLayer = true,
+                            gridSize = 40)
+
+
 
 
                     }
