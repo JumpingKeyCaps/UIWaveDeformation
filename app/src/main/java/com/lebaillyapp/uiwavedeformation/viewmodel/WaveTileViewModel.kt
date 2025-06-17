@@ -19,6 +19,7 @@ class WaveTileViewModel(
 
     private val lastEmissionMap = mutableMapOf<Int, Long>()
     private val emissionCooldownMs = 100L // 100ms entre deux ondes par doigt
+    private val amplitudeWaver = 80f
 
     fun updateTime() {
         _currentTime.value = System.currentTimeMillis()
@@ -36,8 +37,8 @@ class WaveTileViewModel(
                 Wave(
                     origin = position,
                     startTime = now,
-                    amplitude = 80f,
-                    frequency = 1f,
+                    amplitude = amplitudeWaver,
+                    frequency = 2f,
                     speed = 750f
                 )
             )
@@ -46,4 +47,8 @@ class WaveTileViewModel(
     }
 
     fun getDeformationAt(point: Offset): Offset = waveAnimationManager.calculateDeformation(point, _currentTime.value)
+
+    fun getWaveOrigins(): List<Offset> = waveAnimationManager.getActiveWaves().map { it.origin }
+
+
 }
