@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.lebaillyapp.uiwavedeformation.model.WaveDeformationConfig
 import com.lebaillyapp.uiwavedeformation.ui.components.DeformableBitmapGridTouch
+import com.lebaillyapp.uiwavedeformation.ui.screen.AdaptiveTileDemo
 import com.lebaillyapp.uiwavedeformation.ui.screen.DemoWaveGridScreen
 import com.lebaillyapp.uiwavedeformation.ui.screen.WaveGridDragScreen
 import com.lebaillyapp.uiwavedeformation.ui.screen.WaveGridScreen
@@ -118,11 +119,16 @@ class MainActivity : ComponentActivity() {
 
                         val bitmap = ImageBitmap.imageResource(id = R.drawable.demogirl)
                       //  DeformableBitmapGridTouch(bitmap = bitmap)
-                        DemoWaveGridScreen(bitmap,modifier = Modifier
+                 //       DemoWaveGridScreen(bitmap,modifier = Modifier
+                //            .align(Alignment.Center)
+               //             .fillMaxSize(0.99f),
+              //              backLayer = true,
+               //             gridSize = 40)
+
+
+                        AdaptiveTileDemo(bitmap,modifier = Modifier
                             .align(Alignment.Center)
-                            .fillMaxSize(0.99f),
-                            backLayer = true,
-                            gridSize = 40)
+                            .fillMaxSize(0.99f))
 
 
 
