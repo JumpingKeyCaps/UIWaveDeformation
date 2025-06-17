@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 import kotlin.math.max
+import kotlin.math.pow
 
 
 @Composable
@@ -137,9 +138,8 @@ fun DeformableBitmapGridTouch(
                 val ringThickness = ringEffectThickness
                 val inWave = distance in (waveRadius - ringThickness)..(waveRadius + ringThickness)
 
-                val deformFactor = if (touchPoint != null && inWave) {
-                    1f + deformAmplif * (1f - ((distance - waveRadius) / ringThickness).absoluteValue)
-                } else 1.1f
+
+                val deformFactor = if (touchPoint != null && inWave) {1f + deformAmplif * (1f - ((distance - waveRadius) / ringThickness).absoluteValue)} else 1.1f
 
                 val centerX = (screenLeft + screenRight) / 2f
                 val centerY = (screenTop + screenBottom) / 2f
