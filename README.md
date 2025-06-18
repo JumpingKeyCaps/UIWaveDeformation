@@ -49,7 +49,8 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
    - Draw a 2D grid inside a Compose Canvas.  
    - Apply wave deformation by dynamically transforming grid points using sinusoidal wave functions with damping.
 
-2. **Phase 2: Bitmap deformation**  
+2. **Phase 2: Bitmap deformation**
+   
    There are currently three different approaches explored for deforming the bitmap texture with wave effects:
 
    - **2.a) Full CPU Tile-based Deformation** (Current branch)  
@@ -74,12 +75,12 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
      - Pros: Maximum flexibility and performance on supported devices.  
      - Cons: More complex setup, heavier maintenance, steeper learning curve.
 
-3. **Phase 3: Compose UI snapshot deformation**  
+4. **Phase 3: Compose UI snapshot deformation**  
    - Capture a snapshot (bitmap) of the real Compose UI.  
    - Apply wave deformation on this snapshot.  
    - Render the deformed image as a background.
 
-4. **Maintaining UI interactivity**  
+5. **Maintaining UI interactivity**  
    - Overlay a **transparent, fully interactive Compose UI** on top of the deformed canvas.  
    - This overlay captures touch/click inputs to trigger wave animations.  
    - The UI remains fully functional and responsive, with multiple waves triggered concurrently without blocking.
