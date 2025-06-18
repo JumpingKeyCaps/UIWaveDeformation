@@ -1,4 +1,4 @@
-package com.lebaillyapp.uiwavedeformation.viewmodel
+package com.lebaillyapp.uiwavedeformation.viewmodel.phaseI
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

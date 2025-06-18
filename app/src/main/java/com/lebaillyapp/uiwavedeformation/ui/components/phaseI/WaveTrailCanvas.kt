@@ -1,4 +1,4 @@
-package com.lebaillyapp.uiwavedeformation.ui.components
+package com.lebaillyapp.uiwavedeformation.ui.components.phaseI
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable

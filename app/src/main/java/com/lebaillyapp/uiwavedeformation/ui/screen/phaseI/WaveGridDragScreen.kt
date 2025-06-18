@@ -1,10 +1,7 @@
-package com.lebaillyapp.uiwavedeformation.ui.screen
+package com.lebaillyapp.uiwavedeformation.ui.screen.phaseI
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,19 +10,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.lebaillyapp.uiwavedeformation.model.Wave
 import com.lebaillyapp.uiwavedeformation.model.WaveDeformationConfig
-import com.lebaillyapp.uiwavedeformation.ui.components.GridCanvas
-import com.lebaillyapp.uiwavedeformation.ui.components.WaveTrailCanvas
-import com.lebaillyapp.uiwavedeformation.viewmodel.WaveDragViewModel
+import com.lebaillyapp.uiwavedeformation.ui.components.phaseI.GridCanvas
+import com.lebaillyapp.uiwavedeformation.ui.components.phaseI.WaveTrailCanvas
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseI.WaveDragViewModel
 
 /**
  * Variante avancée de l'écran principal :
