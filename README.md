@@ -50,8 +50,29 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
    - Apply wave deformation by dynamically transforming grid points using sinusoidal wave functions with damping.
 
 2. **Phase 2: Bitmap deformation**  
-   - Project a bitmap texture onto the deformed grid.  
-   - The graphical deformation simulates a “water surface” distorting the image.
+   There are currently three different approaches explored for deforming the bitmap texture with wave effects:
+
+   - **2.a) Full CPU Tile-based Deformation** (Current branch)  
+     - The bitmap is subdivided into equal tiles (cells).  
+     - Each tile is individually transformed (translated/scaled) according to wave deformation vectors computed on CPU.  
+     - Dynamic subdivision is applied near wave origins for finer deformation.  
+     - A blurred background layer compensates the visible mosaic effect caused by discrete tile transformations.  
+     - Pros: Works on all Android versions, no GPU requirements.  
+     - Cons: Visual artifacts due to tile mosaicking, limited smoothness.
+
+   - **2.b) Runtime Shader (AGSL) Displacement** (Planned for Android 13+)  
+     - Uses Android 13+ RuntimeShader API with AGSL shaders.  
+     - The deformation is performed per-pixel on the GPU, based on a displacement map generated from wave parameters.  
+     - Produces smooth, continuous wave distortions without visible tile artifacts.  
+     - Pros: High-quality deformation, efficient GPU usage.  
+     - Cons: Requires Android 13+, more complex shader development.
+
+   - **2.c) OpenGL ES-based Deformation** (Optional advanced version)  
+     - Uses OpenGL ES rendering pipeline with textured vertex grids.  
+     - Allows full control over vertex deformation and texture mapping.  
+     - Suitable for advanced effects and possibly 3D wave surfaces.  
+     - Pros: Maximum flexibility and performance on supported devices.  
+     - Cons: More complex setup, heavier maintenance, steeper learning curve.
 
 3. **Phase 3: Compose UI snapshot deformation**  
    - Capture a snapshot (bitmap) of the real Compose UI.  
@@ -67,9 +88,9 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 ## 📸 Screenshots
 
-| Phase 1 | Phase 2 | Phase 3 |
+| Phase 1 | Phase 2 - full CPU | Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based |
 |:---:|:---:|:---:|
-| ![P1](screenshots/phase1.gif) | ![P2](screenshots/phase2.gif) |  ![P3](screenshots/phase3.gif) |
+| ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2.gif) |  ![P2b](screenshots/phase3.gif) |  ![P2c](screenshots/phase3.gif) |
 
 ---
 
