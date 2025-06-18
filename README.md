@@ -92,8 +92,8 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 | Phase 1 | Phase 2 - full CPU (step I) | Phase 2 - full CPU (step II) | 
 |:---:|:---:|:---:|
 | ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2a.gif) |  ![P2b](screenshots/phase2a2.gif) |
-| Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based |
-|:---:|:---:|
+| Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based | Phase 3 - UI Compose Snapshot |
+|:---:|:---:|:---:|
 ---
 
 ## ⚙️ Key Features
