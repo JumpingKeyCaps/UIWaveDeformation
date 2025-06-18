@@ -49,16 +49,38 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
    - Draw a 2D grid inside a Compose Canvas.  
    - Apply wave deformation by dynamically transforming grid points using sinusoidal wave functions with damping.
 
-2. **Phase 2: Bitmap deformation**  
-   - Project a bitmap texture onto the deformed grid.  
-   - The graphical deformation simulates a “water surface” distorting the image.
+2. **Phase 2: Bitmap deformation**
+   
+   There are currently three different approaches explored for deforming the bitmap texture with wave effects:
 
-3. **Phase 3: Compose UI snapshot deformation**  
+   - **2.a) Full CPU Tile-based Deformation**   
+     - The bitmap is subdivided into equal tiles (cells).  
+     - Each tile is individually transformed (translated/scaled) according to wave deformation vectors computed on CPU.  
+     - Dynamic subdivision is applied near wave origins for finer deformation.  
+     - A blurred background layer compensates the visible mosaic effect caused by discrete tile transformations.  
+     - Pros: Works on all Android versions, no GPU requirements.  
+     - Cons: Visual artifacts due to tile mosaicking, limited smoothness.
+
+   - **2.b) Runtime Shader (AGSL) Displacement** (Planned for Android 13+)  
+     - Uses Android 13+ RuntimeShader API with AGSL shaders.  
+     - The deformation is performed per-pixel on the GPU, based on a displacement map generated from wave parameters.  
+     - Produces smooth, continuous wave distortions without visible tile artifacts.  
+     - Pros: High-quality deformation, efficient GPU usage.  
+     - Cons: Requires Android 13+, more complex shader development.
+
+   - **2.c) OpenGL ES-based Deformation** (Optional advanced version)  
+     - Uses OpenGL ES rendering pipeline with textured vertex grids.  
+     - Allows full control over vertex deformation and texture mapping.  
+     - Suitable for advanced effects and possibly 3D wave surfaces.  
+     - Pros: Maximum flexibility and performance on supported devices.  
+     - Cons: More complex setup, heavier maintenance, steeper learning curve.
+
+4. **Phase 3: Compose UI snapshot deformation**  
    - Capture a snapshot (bitmap) of the real Compose UI.  
    - Apply wave deformation on this snapshot.  
    - Render the deformed image as a background.
 
-4. **Maintaining UI interactivity**  
+5. **Maintaining UI interactivity**  
    - Overlay a **transparent, fully interactive Compose UI** on top of the deformed canvas.  
    - This overlay captures touch/click inputs to trigger wave animations.  
    - The UI remains fully functional and responsive, with multiple waves triggered concurrently without blocking.
@@ -67,10 +89,11 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 ## 📸 Screenshots
 
-| Phase 1 | Phase 2 | Phase 3 |
+| Phase 1 | Phase 2 - full CPU (step I) | Phase 2 - full CPU (step II) | 
 |:---:|:---:|:---:|
-| ![P1](screenshots/phase1.gif) | ![P2](screenshots/phase2.gif) |  ![P3](screenshots/phase3.gif) |
-
+| ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2a.gif) |  ![P2b](screenshots/phase2a2.gif) |
+| Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based |
+|:---:|:---:|
 ---
 
 ## ⚙️ Key Features

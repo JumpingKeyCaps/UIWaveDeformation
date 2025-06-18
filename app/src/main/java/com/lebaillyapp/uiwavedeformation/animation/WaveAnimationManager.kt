@@ -64,6 +64,9 @@ class WaveAnimationManager(
         return waves.map { it.copy() } // safe copy
     }
 
+    fun getActiveWaves(): List<Wave> = waves.toList()
+
+
 }
 
 fun Offset.getLength(): Float = sqrt(x * x + y * y)
