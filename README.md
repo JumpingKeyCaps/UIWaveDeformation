@@ -53,7 +53,7 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
    
    There are currently three different approaches explored for deforming the bitmap texture with wave effects:
 
-   - **2.a) Full CPU Tile-based Deformation** (Current branch)  
+   - **2.a) Full CPU Tile-based Deformation**   
      - The bitmap is subdivided into equal tiles (cells).  
      - Each tile is individually transformed (translated/scaled) according to wave deformation vectors computed on CPU.  
      - Dynamic subdivision is applied near wave origins for finer deformation.  
@@ -89,10 +89,11 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 ## 📸 Screenshots
 
-| Phase 1 | Phase 2 - full CPU | Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based |
+| Phase 1 | Phase 2 - full CPU (step I) | Phase 2 - full CPU (step II) | 
 |:---:|:---:|:---:|
-| ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2.gif) |  ![P2b](screenshots/phase3.gif) |  ![P2c](screenshots/phase3.gif) |
-
+| ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2a.gif) |  ![P2b](screenshots/phase2a2.gif) |
+| Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based |
+|:---:|:---:|
 ---
 
 ## ⚙️ Key Features
