@@ -1,4 +1,4 @@
-package com.lebaillyapp.uiwavedeformation.viewmodel
+package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.math.max
 
 /**
  * ViewModel principal pour gérer l'état de la grille, les ondes en cours et la déformation.

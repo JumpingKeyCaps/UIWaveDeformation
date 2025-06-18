@@ -1,4 +1,4 @@
-package com.lebaillyapp.uiwavedeformation.ui.components
+package com.lebaillyapp.uiwavedeformation.ui.components.phaseII
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -20,7 +20,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.delay
 import kotlin.math.absoluteValue
 import kotlin.math.max
-import kotlin.math.pow
 
 
 @Composable

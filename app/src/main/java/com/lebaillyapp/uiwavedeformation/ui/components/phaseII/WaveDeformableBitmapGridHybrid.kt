@@ -1,12 +1,7 @@
-package com.lebaillyapp.uiwavedeformation.ui.components
+package com.lebaillyapp.uiwavedeformation.ui.components.phaseII
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BlurMaskFilter
-import android.graphics.RectF
-import android.graphics.RenderEffect
-import android.graphics.Shader
-import android.os.Build
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
@@ -21,12 +16,11 @@ import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import com.lebaillyapp.uiwavedeformation.viewmodel.WaveTileViewModel
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTileViewModel
 
 import kotlinx.coroutines.delay
 import kotlin.math.hypot
 import kotlin.math.max
-import kotlin.math.min
 
 @Composable
 fun WaveDeformableBitmapGridHybrid(
@@ -95,7 +89,7 @@ fun WaveDeformableBitmapGridHybrid(
         if (drawBackLayer) {
             val androidBitmap = bitmap.asAndroidBitmap()
             // Floute la bitmap (fait une copie floutée, pour ne pas modifier l'original)
-            val blurredBitmap = blurBitmap(context, androidBitmap.copy(android.graphics.Bitmap.Config.ARGB_8888, true), 20f)
+            val blurredBitmap = blurBitmap(context, androidBitmap.copy(Bitmap.Config.ARGB_8888, true), 20f)
 
             nativeCanvas.drawBitmap(
                 blurredBitmap,

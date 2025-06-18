@@ -1,39 +1,23 @@
-package com.lebaillyapp.uiwavedeformation.ui.components
+package com.lebaillyapp.uiwavedeformation.ui.components.phaseII
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Paint
-import android.graphics.RenderEffect
-import android.graphics.Shader
-import android.os.Build
-import android.renderscript.Allocation
-import android.renderscript.RenderScript
-import android.renderscript.ScriptIntrinsicBlur
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.forEachGesture
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.input.pointer.changedToDownIgnoreConsumed
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChanged
-import com.lebaillyapp.uiwavedeformation.viewmodel.WaveTileViewModel
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTileViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.max
 
 @Composable
 fun WaveDeformableBitmapGrid(
-    modifier: Modifier ,
+    modifier: Modifier,
     bitmap: ImageBitmap,
     viewModel: WaveTileViewModel,
     tileCols: Int = 40,

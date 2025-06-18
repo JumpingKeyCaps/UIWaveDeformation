@@ -1,11 +1,11 @@
-package com.lebaillyapp.uiwavedeformation.ui.screen
+package com.lebaillyapp.uiwavedeformation.ui.screen.phaseII
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.lebaillyapp.uiwavedeformation.ui.components.WaveDeformableBitmapGridHybrid
-import com.lebaillyapp.uiwavedeformation.viewmodel.WaveTileViewModel
+import com.lebaillyapp.uiwavedeformation.ui.components.phaseII.WaveDeformableBitmapGridHybrid
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTileViewModel
 
 @Composable
 fun AdaptiveTileDemo(bitmap: ImageBitmap,modifier: Modifier = Modifier){
