@@ -1,9 +1,12 @@
 # UI Wave Deformation - Compose Snapshot + Interactive Overlay
 
+![Status](https://img.shields.io/badge/status-WIP-red)
 ![Platform](https://img.shields.io/badge/platform-Android-green?logo=android)
-![Language](https://img.shields.io/badge/language-Kotlin-orange?logo=kotlin)
-![UI Framework](https://img.shields.io/badge/UI-Jetpack%20Compose-blue?logo=jetpack-compose)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?logo=android&logoColor=white)
+![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84?logo=androidstudio&logoColor=white)
+
+
 
 ---
 
