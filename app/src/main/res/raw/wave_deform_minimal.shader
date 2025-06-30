@@ -1,8 +1,7 @@
 // wave_deform_minimal.shader
 
-
-uniform shader uTexture;          // Texture source (le bitmap à déformer)
-uniform float2 uWaveCenter;       // Centre de l'onde (en pixels)
+uniform shader uTexture;          // Texture source (bitmap à déformer)
+uniform float2 uWaveCenter;       // Centre de l'onde (pixels)
 uniform float uAmplitude;         // Amplitude de l'onde
 uniform float uFrequency;         // Fréquence spatiale
 uniform float uTime;              // Temps en secondes

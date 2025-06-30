@@ -10,9 +10,11 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.IntSize
 
+
 /**
- * Provides a ShaderBrush based on a minimal AGSL RuntimeShader,
- * with time + center uniforms. Falls back gracefully below API 33.
+ * Fournit un ShaderBrush minimal basé sur un RuntimeShader AGSL,
+ * avec uniforms temps + centre + amplitude + fréquence.
+ * Fallback transparent avant API 33.
  */
 class WaveShaderBrushProvider(
     context: Context,
@@ -26,16 +28,20 @@ class WaveShaderBrushProvider(
     } else null
 
     /**
-     * @param size Canvas size in pixels
-     * @param timeSeconds Time for animation
-     * @param centerX X center [0f, width]
-     * @param centerY Y center [0f, height]
+     * @param size taille du canvas en pixels
+     * @param timeSeconds temps en secondes pour animation
+     * @param centerX position X du centre de l'onde [0f, width]
+     * @param centerY position Y du centre de l'onde [0f, height]
+     * @param amplitude amplitude de l'onde
+     * @param frequency fréquence spatiale de l'onde
      */
     fun getBrush(
         size: IntSize,
         timeSeconds: Float,
         centerX: Float,
-        centerY: Float
+        centerY: Float,
+        amplitude: Float,
+        frequency: Float
     ): Brush {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || runtimeShader == null) {
             return SolidColor(androidx.compose.ui.graphics.Color.Transparent)
@@ -44,9 +50,11 @@ class WaveShaderBrushProvider(
         val shader = runtimeShader
         return object : ShaderBrush() {
             override fun createShader(size: Size): android.graphics.Shader {
-                shader.setFloatUniform("resolution", size.width, size.height)
-                shader.setFloatUniform("center", centerX, centerY)
-                shader.setFloatUniform("time", timeSeconds)
+                shader.setFloatUniform("uResolution", size.width, size.height)
+                shader.setFloatUniform("uWaveCenter", centerX, centerY)
+                shader.setFloatUniform("uTime", timeSeconds)
+                shader.setFloatUniform("uAmplitude", amplitude)
+                shader.setFloatUniform("uFrequency", frequency)
                 return shader
             }
         }
