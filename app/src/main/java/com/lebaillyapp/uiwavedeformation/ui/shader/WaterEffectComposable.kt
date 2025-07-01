@@ -2,6 +2,7 @@ package com.lebaillyapp.uiwavedeformation.ui.shader
 
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.os.SystemClock
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
 import androidx.annotation.RequiresApi
@@ -13,63 +14,70 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntSize
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.lebaillyapp.uiwavedeformation.model.WaveParams
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTrailViewModel
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.sample
+import kotlinx.coroutines.yield
+import kotlin.coroutines.cancellation.CancellationException
 
-/**
- * Composable affichant une image avec un effet de déformation d'ondes d'eau
- * généré par un shader AGSL, réactif aux interactions tactiles.
- */
+
+
+
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun WaterEffectComposable(
     modifier: Modifier = Modifier,
     @RawRes shaderResId: Int,
     @DrawableRes imageResId: Int,
-    waveDurationSeconds: Float = 15f // NOUVEAU: Durée de vie des vagues (15s au lieu de 5s)
+    waveDurationSeconds: Float = 3f
 ) {
     val context = LocalContext.current
 
-    // Provider du shader
     val waveProvider = remember { WaveDeformMultiShaderBrushProvider(context, shaderResId) }
 
-    // Chargement de l'image
-    val originalBitmap: ImageBitmap = remember(imageResId) {
-        val androidBitmap = BitmapFactory.decodeResource(context.resources, imageResId)
-        androidBitmap.asImageBitmap()
+    val originalBitmap = remember(imageResId) {
+        BitmapFactory.decodeResource(context.resources, imageResId).asImageBitmap()
     }
 
-    // Animation du temps
-    val infiniteTransition = rememberInfiniteTransition(label = "waterEffectTransition")
-    val time by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1000f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(10000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), label = "timeAnimation"
-    )
-
-    // État des ondes actives
     val activeWaves = remember { mutableStateListOf<WaveParams>() }
+    val currentTimeMs = remember { mutableStateOf(SystemClock.uptimeMillis()) }
 
-    // Nettoyage des anciennes ondes avec la nouvelle durée
-    LaunchedEffect(time) {
-        activeWaves.removeAll { wave ->
-            (time - wave.startTime) > waveDurationSeconds
+    LaunchedEffect(Unit) {
+        while (true) {
+            withFrameNanos {
+                val now = SystemClock.uptimeMillis()
+                currentTimeMs.value = now
+                val waveDurationMs = (waveDurationSeconds * 1000).toLong()
+                activeWaves.removeAll { (now - it.startTime) > waveDurationMs }
+            }
         }
     }
 
@@ -77,61 +85,72 @@ fun WaterEffectComposable(
         modifier = modifier
             .fillMaxSize()
             .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = { offset ->
-                        activeWaves.add(
-                            WaveParams(
-                                center = offset,
-                                amplitude = 30f,      // Réduit pour plus de subtilité
-                                frequency = 0.003f,    // RÉDUIT: Moins de répétitions = vagues plus larges
-                                speed = 0.1f,           // RÉDUIT: Plus lent = vagues plus longues
-                                damping = 0.001f,     // RÉDUIT: Moins d'atténuation = propagation plus loin
-                                startTime = time
-                            )
-                        )
-                    },
-                    onDrag = { change, _ ->
-                        activeWaves.lastOrNull()?.let { lastWave ->
-                            activeWaves[activeWaves.lastIndex] = lastWave.copy(center = change.position)
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        if (event.type == PointerEventType.Press) {
+                            event.changes.forEach { change ->
+                                if (change.pressed && !change.previousPressed) {
+                                    activeWaves.add(
+                                        WaveParams(
+                                            center = change.position,
+                                            amplitude = 50f,
+                                            frequency = 0.009f,
+                                            damping = 0.00009f,
+                                            speed  = 1f,
+                                            startTime = SystemClock.uptimeMillis()
+                                        )
+                                    )
+                                }
+                            }
                         }
-                    },
-                    onDragEnd = {
-                        // Optionnel: ajouter une logique de fin
                     }
-                )
+                }
             }
     ) {
-        val currentBrush = waveProvider.getBrush(
-            size = IntSize(size.width.toInt(), size.height.toInt()),
-            timeSeconds = time,
-            originalBitmap = originalBitmap,
-            waveCenters = activeWaves.map { it.center },
-            amplitudes = activeWaves.map { it.amplitude },
-            frequencies = activeWaves.map { it.frequency },
-            speeds = activeWaves.map { it.speed },
-            dampings = activeWaves.map { it.damping }
-        )
+        val now = currentTimeMs.value
+        val wavesWithAge = activeWaves.map { wave ->
+            wave to ((now - wave.startTime) / 1000f)
+        }
+
+        val visibleWaves = wavesWithAge
+            .filter { (_, age) -> age <= waveDurationSeconds }
+            .takeLast(16)
+
+        val brush = if (visibleWaves.isNotEmpty()) {
+            val centers = visibleWaves.map { it.first.center }
+            val amplitudes = visibleWaves.map { (w, age) ->
+                w.amplitude * (1f - (age / waveDurationSeconds).coerceIn(0f, 1f))
+            }
+            val frequencies = visibleWaves.map { it.first.frequency }
+            val ages = visibleWaves.map { it.second }
+            val dampings = visibleWaves.map { it.first.damping }
+
+            waveProvider.getBrush(
+                size = IntSize(size.width.toInt(), size.height.toInt()),
+                originalBitmap = originalBitmap,
+                waveCenters = centers,
+                amplitudes = amplitudes,
+                frequencies = frequencies,
+                ages = ages,
+                dampings = dampings
+            )
+        } else {
+            waveProvider.getBrush(
+                size = IntSize(size.width.toInt(), size.height.toInt()),
+                originalBitmap = originalBitmap,
+                waveCenters = emptyList(),
+                amplitudes = emptyList(),
+                frequencies = emptyList(),
+                ages = emptyList(),
+                dampings = emptyList()
+            )
+        }
 
         drawIntoCanvas { canvas ->
-            val shader = currentBrush.createShader(size)
-            val paint = android.graphics.Paint().apply {
-                this.shader = shader
-            }
-            canvas.nativeCanvas.drawRect(
-                0f, 0f, size.width, size.height, paint
-            )
+            val shader = brush.createShader(size)
+            val paint = android.graphics.Paint().apply { this.shader = shader }
+            canvas.nativeCanvas.drawRect(0f, 0f, size.width, size.height, paint)
         }
     }
 }
-
-/**
- * Classe de données pour encapsuler les paramètres d'une onde individuelle.
- */
-data class WaveParams(
-    val center: Offset,
-    val amplitude: Float,
-    val frequency: Float,
-    val speed: Float,
-    val damping: Float,
-    val startTime: Float
-)
