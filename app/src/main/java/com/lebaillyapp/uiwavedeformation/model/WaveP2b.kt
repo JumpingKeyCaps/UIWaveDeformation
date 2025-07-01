@@ -8,5 +8,6 @@ data class WaveP2b(
     val frequency: Float = 0.02f,
     val speed: Float = 6f,
     val damping: Float = 1.5f,
-    val timestamp: Long = System.currentTimeMillis() // Pour animer sur base d’un temps initial
+    val timestamp: Long = System.currentTimeMillis()
+
 )
