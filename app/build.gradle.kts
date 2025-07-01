@@ -67,5 +67,7 @@ dependencies {
     implementation (libs.kotlinx.coroutines.core)
     implementation (libs.kotlinx.coroutines.android)
 
+    implementation("androidx.compose.foundation:foundation:1.8.3")
+
 
 }
