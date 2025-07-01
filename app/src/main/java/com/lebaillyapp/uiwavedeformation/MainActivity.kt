@@ -14,10 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lebaillyapp.uiwavedeformation.ui.screen.phaseII.AdaptiveTileDemo
 import com.lebaillyapp.uiwavedeformation.ui.shader.WaterEffectComposable
 import com.lebaillyapp.uiwavedeformation.ui.shader.WaveDeformMultiShaderBrushProvider
 import com.lebaillyapp.uiwavedeformation.ui.theme.UIWaveDeformationTheme
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTrailViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -31,6 +33,8 @@ class MainActivity : ComponentActivity() {
             context = this,
             shaderResId = R.raw.wave_deform_multi
         )
+
+
 
         enableEdgeToEdge()
         setContent {
@@ -99,8 +103,8 @@ class MainActivity : ComponentActivity() {
                         WaterEffectComposable(
                             modifier = Modifier.fillMaxSize(),
                             shaderResId = R.raw.wave_deform_multi, // Ton fichier shader
-                            imageResId = R.drawable.demosp,      // Ton image de test
-                            waveDurationSeconds = 1000f)
+                            imageResId = R.drawable.demogirl,      // Ton image de test
+                            waveDurationSeconds = 1f)
 
                     }
 
