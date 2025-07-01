@@ -1,4 +1,4 @@
-package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII
+package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.modeA
 
 import android.util.Log
 import androidx.compose.ui.geometry.Offset

@@ -1,11 +1,10 @@
-package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII
+package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.modeB
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import com.lebaillyapp.uiwavedeformation.animation.WaveAnimationManagerV2
-import androidx.compose.runtime.State
-import com.lebaillyapp.uiwavedeformation.model.WaveV2
 
 /**
  * ViewModel pour gérer l'interaction tactile avec les ondes de déformation,

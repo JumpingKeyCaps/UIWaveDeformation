@@ -1,7 +1,10 @@
-package com.lebaillyapp.uiwavedeformation.ui.components.phaseII
+package com.lebaillyapp.uiwavedeformation.ui.components.phaseII.modeA
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
 import android.renderscript.Allocation
 import android.renderscript.Element
 import android.renderscript.RenderScript
@@ -16,7 +19,7 @@ import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTileViewModel
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.modeA.WaveTileViewModel
 
 import kotlinx.coroutines.delay
 import kotlin.math.hypot
@@ -79,7 +82,7 @@ fun WaveDeformableBitmapGridHybrid(
         val offsetY = (canvasHeight - drawHeight) / 2f
 
         val androidBitmap = bitmap.asAndroidBitmap()
-        val paint = android.graphics.Paint().apply {
+        val paint = Paint().apply {
             isFilterBitmap = false  // IMPORTANT pour éviter le flou
             isAntiAlias = true
         }
@@ -94,7 +97,7 @@ fun WaveDeformableBitmapGridHybrid(
             nativeCanvas.drawBitmap(
                 blurredBitmap,
                 null,
-                android.graphics.RectF(offsetX, offsetY, offsetX + drawWidth, offsetY + drawHeight),
+                RectF(offsetX, offsetY, offsetX + drawWidth, offsetY + drawHeight),
                 paint
             )
         }
@@ -139,7 +142,7 @@ fun WaveDeformableBitmapGridHybrid(
                         val halfWidth = (subWidth / 2f) * useFactor
                         val halfHeight = (subHeight / 2f) * useFactor
 
-                        val dstRect = android.graphics.RectF(
+                        val dstRect = RectF(
                             localCenterX - halfWidth + deform.x,
                             localCenterY - halfHeight + deform.y,
                             localCenterX + halfWidth + deform.x,
@@ -151,7 +154,7 @@ fun WaveDeformableBitmapGridHybrid(
                         val srcRight = (col * bmpCellWidth + (subCol + 1) * bmpSubWidth).toInt().coerceIn(0, bmpWidth)
                         val srcBottom = (row * bmpCellHeight + (subRow + 1) * bmpSubHeight).toInt().coerceIn(0, bmpHeight)
 
-                        val srcRect = android.graphics.Rect(srcLeft, srcTop, srcRight, srcBottom)
+                        val srcRect = Rect(srcLeft, srcTop, srcRight, srcBottom)
 
                         nativeCanvas.drawBitmap(androidBitmap, srcRect, dstRect, paint)
                     }

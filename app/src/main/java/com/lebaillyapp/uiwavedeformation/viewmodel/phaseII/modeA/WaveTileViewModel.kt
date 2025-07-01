@@ -1,4 +1,4 @@
-package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII
+package com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.modeA
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

@@ -1,5 +1,8 @@
-package com.lebaillyapp.uiwavedeformation.ui.components.phaseII
+package com.lebaillyapp.uiwavedeformation.ui.components.phaseII.modeA
 
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.runtime.Composable
@@ -11,7 +14,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
-import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTileViewModel
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.modeA.WaveTileViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.max
 
@@ -74,10 +77,10 @@ fun WaveDeformableBitmapGrid(
         val cellHeight = drawHeight / tileRows
 
         val androidBitmap = bitmap.asAndroidBitmap()
-        val paint = android.graphics.Paint().apply { isFilterBitmap = true }
+        val paint = Paint().apply { isFilterBitmap = true }
 
-        val srcRect = android.graphics.Rect()
-        val dstRect = android.graphics.RectF()
+        val srcRect = Rect()
+        val dstRect = RectF()
 
         val nativeCanvas = drawContext.canvas.nativeCanvas
 
@@ -86,7 +89,7 @@ fun WaveDeformableBitmapGrid(
             nativeCanvas.drawBitmap(
                 androidBitmap,
                 null,
-                android.graphics.RectF(
+                RectF(
                     offsetX,
                     offsetY,
                     offsetX + drawWidth,

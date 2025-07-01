@@ -10,16 +10,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.lebaillyapp.uiwavedeformation.ui.screen.phaseII.AdaptiveTileDemo
-import com.lebaillyapp.uiwavedeformation.ui.shader.WaterEffectComposable
+import com.lebaillyapp.uiwavedeformation.ui.screen.phaseII.modeB.WaterEffectComposable
 import com.lebaillyapp.uiwavedeformation.ui.shader.WaveDeformMultiShaderBrushProvider
 import com.lebaillyapp.uiwavedeformation.ui.theme.UIWaveDeformationTheme
-import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveTrailViewModel
 
 class MainActivity : ComponentActivity() {
 
