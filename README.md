@@ -55,7 +55,7 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 2. **Phase 2: Bitmap deformation**
    
-   There are currently three different approaches explored for deforming the bitmap texture with wave effects:
+   There are currently two different approaches explored for deforming the bitmap texture with wave effects:
 
    - **2.a) Full CPU Tile-based Deformation**   
      - The bitmap is subdivided into equal tiles (cells).  
