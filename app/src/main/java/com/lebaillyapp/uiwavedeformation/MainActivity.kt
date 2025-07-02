@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
+import com.lebaillyapp.uiwavedeformation.modeC.WaveDeformableBitmapShader
 import com.lebaillyapp.uiwavedeformation.ui.screen.phaseII.modeB.WaterEffectComposable
 import com.lebaillyapp.uiwavedeformation.ui.shader.WaveDeformMultiShaderBrushProvider
 import com.lebaillyapp.uiwavedeformation.ui.theme.UIWaveDeformationTheme
@@ -95,12 +96,24 @@ class MainActivity : ComponentActivity() {
 
 
                         //todo phase 2b ------------- RuntimeShader AGSL
-
+                        //mode B
+                        /**
                         WaterEffectComposable(
                             modifier = Modifier.fillMaxSize(),
                             shaderResId = R.raw.wave_deform_multi, // Ton fichier shader
                             imageResId = R.drawable.demogirl,      // Ton image de test
                             waveDurationSeconds = 1f)
+
+                        */
+
+                        //mode C
+
+                        WaveDeformableBitmapShader(
+                            modifier = Modifier.fillMaxSize(),
+                            bitmap = bitmap,
+                            shaderResId = R.raw.wave_deform_shader
+                        )
+
 
                     }
 
