@@ -1,4 +1,4 @@
-# UI Wave Deformation - Compose Snapshot + Interactive Overlay
+# UI Wave Deformation - Compose Snapshot + AGSL
 
 ![Status](https://img.shields.io/badge/status-WIP-red)
 ![Platform](https://img.shields.io/badge/platform-Android-green?logo=android)
@@ -25,7 +25,8 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 ## 🎯 Goals
 
 - Implement a realistic wave deformation (ripple/distortion) on a 2D grid.  
-- Apply this deformation progressively on more complex graphical content: bitmap, Compose UI snapshot.  
+- Apply this deformation progressively on more complex graphical content: bitmap, Compose UI snapshot.
+- Implement a AGSL (Android Graphics Shading Language) solution.
 - Maintain UI interactivity with a **transparent interactive overlay** above the deformed rendering.  
 - Support multiple simultaneous wave interactions triggered at different screen points.  
 - Provide a clean and performant architecture compatible with Jetpack Compose.
@@ -71,13 +72,6 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
      - Pros: High-quality deformation, efficient GPU usage.  
      - Cons: Requires Android 13+, more complex shader development.
 
-   - **2.c) OpenGL ES-based Deformation** (Optional advanced version)  
-     - Uses OpenGL ES rendering pipeline with textured vertex grids.  
-     - Allows full control over vertex deformation and texture mapping.  
-     - Suitable for advanced effects and possibly 3D wave surfaces.  
-     - Pros: Maximum flexibility and performance on supported devices.  
-     - Cons: More complex setup, heavier maintenance, steeper learning curve.
-
 4. **Phase 3: Compose UI snapshot deformation**  
    - Capture a snapshot (bitmap) of the real Compose UI.  
    - Apply wave deformation on this snapshot.  
@@ -95,14 +89,15 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 | Phase 1 - 2D Grid Canvas | Phase 2 - Full CPU (step I) | Phase 2 - Full CPU (step II) | 
 |:---:|:---:|:---:|
 | ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2a.gif) |  ![P2b](screenshots/phase2a2.gif) |
-| Phase 2 - Runtime Shader AGSL | Phase 2 - OpenGL ES-based | Phase 3 - UI Compose Snapshot |
+| Phase 2 - Runtime Shader AGSL | Phase 2 - Runtime Shader AGSL alt | Phase 3 - UI Compose Snapshot |
 |:---:|:---:|:---:|
 ---
 
 ## ⚙️ Key Features
 
 - Real-time management of multiple waves with natural propagation and decay.  
-- Geometric transformation of grid points using sine functions and damping for smooth waves.  
+- Geometric transformation of grid points using sine functions and damping for smooth waves.
+- Android Graphics Shading Language version to a good and optimised rendering.
 - Efficient Compose UI snapshot capturing.  
 - Synchronized animation and interaction handling.  
 - Simple interface to switch between grid, bitmap, and snapshot deformation modes.  
@@ -122,7 +117,8 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 - Kotlin + Jetpack Compose  
 - Compose Canvas for drawing and graphic transformations  
-- Compose Snapshot API for UI capture  
+- Compose Snapshot API for UI capture
+- AGSL shader (android 13+ only)
 - Coroutines and State management for animation and interaction  
 - Math & trigonometry for wave modeling  
 
