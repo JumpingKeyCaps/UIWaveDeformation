@@ -15,7 +15,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import com.lebaillyapp.uiwavedeformation.ui.components.phaseI.GridCanvas
-import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.WaveViewModel
+import com.lebaillyapp.uiwavedeformation.viewmodel.phaseII.modeA.WaveViewModel
 
 /**
  * Écran principal affichant la grille déformée avec interaction tactile.

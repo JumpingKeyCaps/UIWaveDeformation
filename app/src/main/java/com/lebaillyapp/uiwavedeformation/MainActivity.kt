@@ -1,23 +1,35 @@
 package com.lebaillyapp.uiwavedeformation
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
-import com.lebaillyapp.uiwavedeformation.ui.screen.phaseII.AdaptiveTileDemo
+import com.lebaillyapp.uiwavedeformation.modeC.WaveDeformableBitmapShader
+import com.lebaillyapp.uiwavedeformation.ui.screen.phaseII.modeB.WaterEffectComposable
+import com.lebaillyapp.uiwavedeformation.ui.shader.WaveDeformMultiShaderBrushProvider
 import com.lebaillyapp.uiwavedeformation.ui.theme.UIWaveDeformationTheme
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var brushProvider: WaveDeformMultiShaderBrushProvider
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        brushProvider = WaveDeformMultiShaderBrushProvider(
+            context = this,
+            shaderResId = R.raw.wave_deform_multi
+        )
 
 
 
@@ -78,11 +90,34 @@ class MainActivity : ComponentActivity() {
                             gridSize = 40)
                         */
 
-                        AdaptiveTileDemo(bitmap,modifier = Modifier
-                            .align(Alignment.Center)
-                            .fillMaxSize(0.99f))
+                    //    AdaptiveTileDemo(bitmap,modifier = Modifier.align(Alignment.Center).fillMaxSize(0.99f))
+
+
+
+
+                        //todo phase 2b ------------- RuntimeShader AGSL
+                        //mode B
+                        /**
+                        WaterEffectComposable(
+                            modifier = Modifier.fillMaxSize(),
+                            shaderResId = R.raw.wave_deform_multi, // Ton fichier shader
+                            imageResId = R.drawable.demogirl,      // Ton image de test
+                            waveDurationSeconds = 1f)
+
+                        */
+
+                        //mode C
+
+                        WaveDeformableBitmapShader(
+                            modifier = Modifier.fillMaxSize(),
+                            bitmap = bitmap,
+                            shaderResId = R.raw.wave_deform_shader
+                        )
+
 
                     }
+
+
 
                 }
 
