@@ -1,4 +1,4 @@
-# UI Wave Deformation - Compose Snapshot + AGSL
+# UI Ripple Wave Deformation - Compose Snapshot + AGSL
 
 ![Status](https://img.shields.io/badge/status-WIP-red)
 ![Platform](https://img.shields.io/badge/platform-Android-green?logo=android)
@@ -86,11 +86,12 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 ## 📸 Screenshots
 
-| Phase 1 - 2D Grid Canvas | Phase 2 - Full CPU (step I) | Phase 2 - Full CPU (step II) | 
+| Phase 1 - 2D Grid Canvas | Phase 2a - Full CPU (step I) | Phase 2a - Full CPU (step II) | 
 |:---:|:---:|:---:|
-| ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2a.gif) |  ![P2b](screenshots/phase2a2.gif) |
-| Phase 2 - Runtime Shader AGSL | Phase 2 - Runtime Shader AGSL alt | Phase 3 - UI Compose Snapshot |
+| ![P1](screenshots/phase1.gif) | ![P2a](screenshots/phase2a.gif) |  ![P2a](screenshots/phase2a2.gif) |
+| Phase 2b - Runtime Shader AGSL | Phase 2b - Runtime Shader AGSL alt | Phase 3 - UI Compose Snapshot |
 |:---:|:---:|:---:|
+| ![P2b](screenshots/demo2b1.gif) | ![P2b](screenshots/demo2b2.gif) | 
 ---
 
 ## ⚙️ Key Features
@@ -128,7 +129,6 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 - Performance constraints on low-end devices with multiple simultaneous waves.  
 - Snapshot capture latency depending on UI complexity.  
-- No GPU/OpenGL acceleration yet for deformation calculations.  
 - Potential to add extra optical effects (blur, reflection, refraction).  
 - Adaptation for multi-screen and orientation changes.
 
@@ -136,7 +136,7 @@ while keeping a **fully interactive UI responsive** via a transparent overlay.
 
 ## 🧠 Conclusion
 
-This project demonstrates how to combine **complex graphical rendering and modern interactive UI** on Android Compose by cleverly using snapshots and layered UI overlays.
+This project demonstrates how to combine **complex graphical rendering and modern interactive UI** on Android Compose by cleverly using snapshots,layered UI overlays and AGSL shaders.
 
 It opens the door to unique visual effects while maintaining smooth, responsive user experiences — a common challenge in advanced UI/UX design.
 
