@@ -46,7 +46,7 @@ float PI = 3.141592653589793;
  */
 half4 main(float2 fragCoord) {
     // 'fragCoord' represents the current pixel's position, which is the 'point'
-    // in your original `calculateDeformation` function.
+    // in the original `calculateDeformation` function.
     float2 point = fragCoord;
 
     // Initialize the total offset for the current pixel to zero.
